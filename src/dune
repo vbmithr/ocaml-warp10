@@ -1,0 +1,11 @@
+(library
+ (name warp10)
+ (public_name warp10)
+ (modules Warp10)
+ (libraries ptime uri))
+
+(library
+ (name warp10_async)
+ (public_name warp10-async)
+ (modules Warp10_async)
+ (libraries warp10 async cohttp-async))
