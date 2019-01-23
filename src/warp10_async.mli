@@ -5,8 +5,8 @@
 
 open Async
 
-val record : uri:Uri.t -> token:string ->
-  Warp10.t Pipe.Reader.t -> unit Deferred.Or_error.t
+val record :
+  uri:Uri.t -> token:string -> Warp10.t Pipe.Reader.t -> unit
 
 (*---------------------------------------------------------------------------
    Copyright (c) 2019 Vincent Bernardoff

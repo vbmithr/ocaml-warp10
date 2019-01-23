@@ -8,4 +8,4 @@
  (name warp10_async)
  (public_name warp10-async)
  (modules Warp10_async)
- (libraries warp10 async cohttp-async))
+ (libraries warp10 async cohttp-async logs-async))
