@@ -8,4 +8,12 @@
  (name warp10_async)
  (public_name warp10-async)
  (modules Warp10_async)
+ (optional)
  (libraries warp10 async cohttp-async logs-async))
+
+(library
+ (name warp10_lwt)
+ (public_name warp10-lwt)
+ (modules Warp10_lwt)
+ (optional)
+ (libraries warp10 lwt cohttp-lwt-unix logs.lwt))
