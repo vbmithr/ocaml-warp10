@@ -30,6 +30,13 @@ and value =
 val pp : Format.formatter -> t -> unit
 val to_string : t -> string
 
+val create :
+  ?ts:Ptime.t ->
+  ?coord:float * float ->
+  ?elevation:int ->
+  ?labels:(string * string) list ->
+  name:string -> value -> t
+
 val create_long :
   ?ts:Ptime.t ->
   ?coord:float * float ->
