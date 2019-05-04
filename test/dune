@@ -1,0 +1,6 @@
+(test
+ (name test)
+ (libraries warp10
+            warp10-async
+            alcotest
+            alcotest-async))
