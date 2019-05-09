@@ -14,6 +14,7 @@ let record uri vs =
     match Uri.user uri with
     | None -> invalid_arg "no token in url"
     | Some token -> token in
+  let uri = Uri.with_userinfo uri None in
   let headers =
     Cohttp.Header.of_list [
       "Content-Type", "text/plain" ;
