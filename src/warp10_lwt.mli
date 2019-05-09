@@ -3,8 +3,7 @@
    Distributed under the ISC license, see terms at the end of the file.
   ---------------------------------------------------------------------------*)
 
-val record :
-  uri:Uri.t -> token:string -> Warp10.t Lwt_stream.t -> unit
+val record : Uri.t -> Warp10.t Lwt_stream.t -> unit
 
 (*---------------------------------------------------------------------------
    Copyright (c) 2019 Vincent Bernardoff

@@ -9,7 +9,11 @@ open Cohttp_lwt_unix
 
 let src = Logs.Src.create ~doc:"Warp10 - Lwt" "warp10.lwt"
 
-let record ~uri ~token vs =
+let record uri vs =
+  let token =
+    match Uri.user uri with
+    | None -> invalid_arg "no token in url"
+    | Some token -> token in
   let headers =
     Cohttp.Header.of_list [
       "Content-Type", "text/plain" ;
