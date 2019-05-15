@@ -39,7 +39,11 @@ let record uri vs =
     else begin match e with
       | Error e ->
         Log.err (fun m -> m "%a" Error.pp e)
-      | Ok _ -> Deferred.unit
+      | Ok (resp, body) ->
+        Log.debug begin fun m ->
+          Body.to_string body >>= fun body ->
+          m "%a@.%s" Cohttp.Response.pp_hum resp body
+        end
     end >>= fun () ->
       Clock_ns.(after @@ Time_ns.Span.of_int_sec 5) >>=
       loop
