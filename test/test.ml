@@ -11,8 +11,7 @@ let warp10 () =
   | Some uri ->
     let uri = Uri.of_string uri in
     let pt = Warp10.create_long ~name:"foo" 54L in
-    Warp10_async.record uri (Pipe.of_list [ pt ]) ;
-    Clock_ns.(after @@ Time_ns.Span.of_int_sec 1)
+    Warp10_async.record uri (Pipe.of_list [ pt ])
 
 let basic =
   "basic", [

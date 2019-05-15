@@ -20,35 +20,14 @@ let record uri vs =
       "Content-Type", "text/plain" ;
       "X-Warp10-Token", token ;
     ] in
-  let body = Body.of_pipe (Pipe.map vs ~f:(fun v ->
-      Format.asprintf "%a@." Warp10.pp v)) in
-  let interrupt =
-    Pipe.closed vs >>= fun () ->
-    let rec loop () =
-      if Pipe.is_empty vs then Deferred.unit
-      else Clock_ns.after @@ Time_ns.Span.of_int_sec 5 >>= loop
-    in
-    loop ()
-  in
-  let rec loop () =
-    Monitor.try_with_or_error begin fun () ->
-      Client.post ~interrupt ~chunked:true ~headers ~body uri
-    end >>= fun e ->
-    if Pipe.is_closed vs then
-      Log.info (fun m -> m "Input metrics pipe is closed, aborting")
-    else begin match e with
-      | Error e ->
-        Log.err (fun m -> m "%a" Error.pp e)
-      | Ok (resp, body) ->
-        Log.debug begin fun m ->
-          Body.to_string body >>= fun body ->
-          m "%a@.%s" Cohttp.Response.pp_hum resp body
-        end
-    end >>= fun () ->
-      Clock_ns.(after @@ Time_ns.Span.of_int_sec 5) >>=
-      loop
-  in
-  don't_wait_for (loop ())
+  Pipe.iter vs ~f:begin fun msg ->
+    let body = Body.of_string (Format.asprintf "%a" Warp10.pp msg) in
+    Client.post ~headers ~body uri >>= fun (resp, body) ->
+      Log.debug begin fun m ->
+        Body.to_string body >>= fun body ->
+        m "%a@.%s" Cohttp.Response.pp_hum resp body
+      end
+  end
 
 (*---------------------------------------------------------------------------
    Copyright (c) 2019 Vincent Bernardoff

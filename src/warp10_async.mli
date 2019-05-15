@@ -5,7 +5,7 @@
 
 open Async
 
-val record : Uri.t -> Warp10.t Pipe.Reader.t -> unit
+val record : Uri.t -> Warp10.t Pipe.Reader.t -> unit Deferred.t
 (** [record url msgs] records [msg] in [url]. The authentication token
     must be put in the `user` part of [url]. *)
 
