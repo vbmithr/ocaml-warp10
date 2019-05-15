@@ -8,6 +8,7 @@ open Async
 open Cohttp_async
 
 let src = Logs.Src.create ~doc:"Warp10 - Async" "warp10.async"
+module Log = (val Logs_async.src_log src : Logs_async.LOG)
 
 let record uri vs =
   let token = match Uri.user uri with
@@ -34,12 +35,10 @@ let record uri vs =
       Client.post ~interrupt ~chunked:true ~headers ~body uri
     end >>= fun e ->
     if Pipe.is_closed vs then
-      Logs_async.info ~src begin fun m ->
-        m "Input metrics pipe is closed, aborting"
-      end
+      Log.info (fun m -> m "Input metrics pipe is closed, aborting")
     else begin match e with
       | Error e ->
-        Logs_async.err ~src (fun m -> m "%a" Error.pp e)
+        Log.err (fun m -> m "%a" Error.pp e)
       | Ok _ -> Deferred.unit
     end >>= fun () ->
       Clock_ns.(after @@ Time_ns.Span.of_int_sec 5) >>=
