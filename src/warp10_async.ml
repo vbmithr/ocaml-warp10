@@ -5,7 +5,7 @@
 
 open Core
 open Async
-open Cohttp_async
+open Httpaf
 
 let src = Logs.Src.create ~doc:"Warp10 - Async" "warp10.async"
 module Log = (val Logs_async.src_log src : Logs_async.LOG)
@@ -16,17 +16,16 @@ let record uri vs =
     | Some token -> token in
   let uri = Uri.with_userinfo uri None in
   let headers =
-    Cohttp.Header.of_list [
+    Headers.of_list [
       "Content-Type", "text/plain" ;
       "X-Warp10-Token", token ;
     ] in
   Pipe.iter vs ~f:begin fun msg ->
-    let body = Body.of_string (Format.asprintf "%a" Warp10.pp msg) in
-    Client.post ~headers ~body uri >>= fun (resp, body) ->
-      Log.debug begin fun m ->
-        Body.to_string body >>= fun body ->
-        m "%a@.%s" Cohttp.Response.pp_hum resp body
-      end
+    let body = Format.asprintf "%a" Warp10.pp msg in
+    Fastrest.simple_call ~headers ~body ~meth:`POST uri >>= fun (resp, _body) ->
+    if not (Status.is_successful resp.status) then
+      failwith (Status.to_string resp.status)
+    else Deferred.unit
   end
 
 (*---------------------------------------------------------------------------

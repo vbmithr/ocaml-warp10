@@ -2,5 +2,6 @@
  (name test)
  (libraries warp10
             warp10-async
+            logs-async-reporter
             alcotest
             alcotest-async))

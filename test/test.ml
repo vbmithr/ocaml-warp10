@@ -4,6 +4,10 @@ open Async
 open Alcotest
 open Alcotest_async
 
+let () =
+  Logs.set_reporter (Logs_async_reporter.reporter ()) ;
+  Logs.set_level (Some Debug)
+
 let warp10 () =
   match Sys.getenv "OVH_METRICS_URL" with
   | None ->

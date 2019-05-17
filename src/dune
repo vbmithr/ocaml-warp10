@@ -9,7 +9,7 @@
  (public_name warp10-async)
  (modules Warp10_async)
  (optional)
- (libraries warp10 async cohttp-async logs-async))
+ (libraries warp10 async fastrest logs-async))
 
 (library
  (name warp10_lwt)
