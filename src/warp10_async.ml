@@ -8,7 +8,7 @@ open Async
 open Httpaf
 
 let src = Logs.Src.create ~doc:"Warp10 - Async" "warp10.async"
-module Log = (val Logs_async.src_log src : Logs_async.LOG)
+module Log_async = (val Logs_async.src_log src : Logs_async.LOG)
 
 let record uri vs =
   let token = match Uri.user uri with
@@ -20,12 +20,23 @@ let record uri vs =
       "Content-Type", "text/plain" ;
       "X-Warp10-Token", token ;
     ] in
-  Pipe.iter vs ~f:begin fun msg ->
-    let body = Format.asprintf "%a" Warp10.pp msg in
-    Fastrest.simple_call ~headers ~body ~meth:`POST uri >>= fun (resp, _body) ->
-    if not (Status.is_successful resp.status) then
-      failwith (Status.to_string resp.status)
-    else Deferred.unit
+  let buf = Buffer.create 13 in
+  Pipe.iter' ~continue_on_error:true vs ~f:begin fun msgq ->
+    Buffer.clear buf ;
+    Queue.iter msgq ~f:begin fun msg ->
+      Buffer.add_string buf (Format.asprintf "%a@." Warp10.pp msg)
+    end ;
+    Monitor.try_with begin fun () ->
+      Fastrest.simple_call
+        ~headers
+        ~body:(Buffer.contents buf)
+        ~meth:`POST uri >>= fun (resp, _body) ->
+      if not (Status.is_successful resp.status) then
+        failwith (Status.to_string resp.status)
+      else Deferred.unit
+    end >>= function
+    | Error e -> Log_async.err (fun m -> m "%a" Exn.pp e)
+    | Ok () -> Deferred.unit
   end
 
 (*---------------------------------------------------------------------------
