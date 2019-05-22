@@ -22,6 +22,7 @@ and coord = {
 }
 
 and value =
+  | Int of int
   | Long of int64
   | Double of float
   | Bool of bool
@@ -67,6 +68,7 @@ let pp_print_label ppf (k, v) =
   Format.fprintf ppf "%a=%a" pp_print_pct_encode k pp_print_pct_encode v
 
 let pp_print_value ppf = function
+  | Int i -> Format.fprintf ppf "%d" i
   | Long i -> Format.fprintf ppf "%Ld" i
   | Double f -> Format.pp_print_float ppf f
   | Bool b -> pp_print_bool ppf b

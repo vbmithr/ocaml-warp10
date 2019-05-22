@@ -22,6 +22,7 @@ and coord = {
 }
 
 and value =
+  | Int of int
   | Long of int64
   | Double of float
   | Bool of bool
