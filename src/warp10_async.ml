@@ -30,7 +30,9 @@ let record uri vs =
       Fastrest.simple_call
         ~headers
         ~body:(Buffer.contents buf)
-        ~meth:`POST uri >>= fun (resp, _body) ->
+        ~meth:`POST uri >>= fun (resp, body) ->
+      Pipe.drain body >>= fun () ->
+      Pipe.close_read body ;
       if not (Status.is_successful resp.status) then
         failwith (Status.to_string resp.status)
       else Deferred.unit
