@@ -1,0 +1,18 @@
+opam-version: "2.0"
+authors: "Vincent Bernardoff <vb@luminar.eu.org>"
+maintainer: "Vincent Bernardoff <vb@luminar.eu.org>"
+homepage: "https://github.com/vbmithr/ocaml-warp10"
+bug-reports: "https://github.com/vbmithr/ocaml-warp10/issues"
+dev-repo: "git+https://github.com/vbmithr/ocaml-warp10"
+doc: "https://vbmithr.github.io/ocaml-warp10/doc"
+build: [ "dune" "build" "-j" jobs "-p" name ]
+depends: [
+  "dune" {>= "1.11.4"}
+  "warp10" {= version}
+  "async" {>= "v0.12.0"}
+  "fastrest" {= version}
+  "logs-async" {= version}
+]
+synopsis: "Write in a Warp10 database using Async."
+description: """
+"""
