@@ -11,6 +11,6 @@ depends: [
   "uri" {>= "3.1.0"}
   "ptime" {>= "0.8.5"}
 ]
-synopsis: "Types for Warp10 time series database."
+synopsis: "Types for Warp10 time series database"
 description: """
 """

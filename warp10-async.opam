@@ -13,6 +13,6 @@ depends: [
   "fastrest" {= version}
   "logs-async" {= version}
 ]
-synopsis: "Write in a Warp10 database using Async."
+synopsis: "Write in a Warp10 database using Async"
 description: """
 """
