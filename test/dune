@@ -1,7 +1,9 @@
 (test
  (name test)
- (libraries warp10
-            warp10-async
-            logs-async-reporter
-            alcotest
-            alcotest-async))
+ (package warp10-async)
+ (libraries
+   warp10
+   warp10-async
+   logs-async-reporter
+   alcotest
+   alcotest-async))

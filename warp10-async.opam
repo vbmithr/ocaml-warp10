@@ -12,6 +12,9 @@ depends: [
   "async" {>= "v0.12.0"}
   "fastrest" {= version}
   "logs-async" {= version}
+  "logs-async-reporter" {with-test & = version}
+  "alcotest" {with-test & >= "0.8.5"}
+  "alcotest-async" {with-test & >= "0.8.5"}
 ]
 synopsis: "Write in a Warp10 database using Async"
 description: """
