@@ -4,6 +4,6 @@
  (libraries
    warp10
    warp10-async
-   logs-async-reporter
-   alcotest
+   core
+   async
    alcotest-async))

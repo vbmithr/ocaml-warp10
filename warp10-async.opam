@@ -7,14 +7,14 @@ dev-repo: "git+https://github.com/vbmithr/ocaml-warp10"
 doc: "https://vbmithr.github.io/ocaml-warp10/doc"
 build: [ "dune" "build" "-j" jobs "-p" name ]
 depends: [
+  "ocaml" {>= "4.08.0"}
   "dune" {>= "1.11.4"}
   "warp10" {= version}
-  "async" {>= "v0.12.0"}
+  "core" {>= "v0.13.0"}
+  "async" {>= "v0.13.0"}
   "fastrest" {= version}
   "logs-async" {= version}
-  "logs-async-reporter" {with-test & = version}
-  "alcotest" {with-test & >= "0.8.5"}
-  "alcotest-async" {with-test & >= "0.8.5"}
+  "alcotest-async" {with-test & >= "1.0.0"}
 ]
 synopsis: "Write in a Warp10 database using Async"
 description: """

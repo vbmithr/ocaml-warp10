@@ -1,6 +1,5 @@
+open Core
 open Async
-
-open Alcotest
 open Alcotest_async
 
 let warp10 () =
@@ -16,9 +15,11 @@ let basic =
     test_case "warp10" `Quick warp10 ;
   ]
 
-let () =
-  Logs.set_reporter (Logs_async_reporter.reporter ()) ;
-  Logs.set_level (Some Debug) ;
+let main () =
   run "warp10" [
     basic
   ]
+
+let () =
+  don't_wait_for (main ()) ;
+  never_returns (Scheduler.go ())
